@@ -14,7 +14,7 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1 class="d-flex align-items-center">
   <span>Drivers</span>
-  <div class="ml-3"> {# ml-3 робить відступ зліва від тексту #}
+  <div class="ml-3">
     {% if request.user in car.drivers.all %}
       <form action="{% url 'taxi:toggle-car-assign' pk=car.id %}" method="post" class="d-inline">
         {% csrf_token %}
