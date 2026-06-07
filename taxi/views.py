@@ -113,13 +113,15 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
         driver = self.get_object()
         if driver == self.request.user:
             logout(self.request)
-            messages.success(self.request,
-                             "Your driver account has "
-                             "been permanently deleted.")
+            messages.success(
+                self.request, "Your driver account "
+                              "has " "been permanently deleted."
+            )
         else:
-            messages.success(self.request,
-                             f"Driver {driver.username} "
-                             f"was successfully deleted.")
+            messages.success(
+                self.request, f"Driver {driver.username} " f"was "
+                              f"successfully deleted."
+            )
         super().form_valid(form)
         return HttpResponseRedirect(success_url)
 

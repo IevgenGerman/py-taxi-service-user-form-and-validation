@@ -9,9 +9,11 @@ from taxi.models import Driver, Car
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name",
-                                                 "last_name",
-                                                 "license_number")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number",
+        )
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -24,7 +26,8 @@ class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,)
+        required=False,
+    )
 
     class Meta:
         model = Car

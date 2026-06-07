@@ -15,35 +15,30 @@ from .views import (
     ManufacturerDeleteView,
     ManufacturerDetailView,
     DriverCreateView,
-    DriverDeleteView, DriverLicenseUpdateView, ToggleAssignToCarView,
-
+    DriverDeleteView,
+    DriverLicenseUpdateView,
+    ToggleAssignToCarView,
 )
 
 urlpatterns = [
     path("", index, name="index"),
-    path(
-        "manufacturers/",
-        ManufacturerListView.as_view(),
-        name="manufacturer-list",
-    ),
-    path(
-        "manufacturers/create/",
-        ManufacturerCreateView.as_view(),
-        name="manufacturer-create",
-    ),
-    path(
-        "manufacturers/<int:pk>/update/",
-        ManufacturerUpdateView.as_view(),
-        name="manufacturer-update",
-    ),
-    path(
-        "manufacturers/<int:pk>/delete/",
-        ManufacturerDeleteView.as_view(),
-        name="manufacturer-delete",
-    ),
-    path("manufacturer/<int:pk>/",
+    path("manufacturers/",
+         ManufacturerListView.as_view(),
+         name="manufacturer-list"),
+    path("manufacturers/create/",
+         ManufacturerCreateView.as_view(),
+         name="manufacturer-create"),
+    path("manufacturers/<int:pk>/update/",
+         ManufacturerUpdateView.as_view(),
+         name="manufacturer-update"),
+    path("manufacturers/<int:pk>/delete/",
+         ManufacturerDeleteView.as_view(),
+         name="manufacturer-delete"),
+    path("manufacturers/<int:pk>/",
          ManufacturerDetailView.as_view(),
          name="manufacturer-detail"),
+
+
     path("cars/",
          CarListView.as_view(),
          name="car-list"),
@@ -59,22 +54,19 @@ urlpatterns = [
     path("cars/<int:pk>/delete/",
          CarDeleteView.as_view(),
          name="car-delete"),
+
     path("drivers/",
          DriverListView.as_view(),
          name="driver-list"),
-
     path("drivers/create/",
          DriverCreateView.as_view(),
          name="driver-create"),
     path("drivers/<int:pk>/delete/",
          DriverDeleteView.as_view(),
          name="driver-delete"),
-
-    path(
-        "drivers/<int:pk>/",
-        DriverDetailView.as_view(),
-        name="driver-detail"
-    ),
+    path("drivers/<int:pk>/",
+         DriverDetailView.as_view(),
+         name="driver-detail"),
     path("drivers/<int:pk>/update-license/",
          DriverLicenseUpdateView.as_view(),
          name="driver-license-update"),
@@ -82,6 +74,5 @@ urlpatterns = [
          ToggleAssignToCarView.as_view(),
          name="toggle-car-assign"),
 ]
-
 
 app_name = "taxi"
