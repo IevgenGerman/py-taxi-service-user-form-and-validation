@@ -6,7 +6,9 @@ from django.urls import reverse
 
 license_validator = RegexValidator(
     regex=r"^[A-Z]{3}\d{5}$",
-    message="License number must consist of 8 characters: 3 uppercase letters followed by 5 digits."
+    message="License number must consist "
+            "of 8 characters: 3 uppercase letters "
+            "followed by 5 digits."
 )
 
 

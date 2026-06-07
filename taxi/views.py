@@ -59,6 +59,7 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class ManufacturerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Manufacturer
 
+
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
@@ -116,7 +117,9 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
                              "Your driver account has "
                              "been permanently deleted.")
         else:
-            messages.success(self.request, f"Driver {driver.username} was successfully deleted.")
+            messages.success(self.request,
+                             f"Driver {driver.username} "
+                             f"was successfully deleted.")
         super().form_valid(form)
         return HttpResponseRedirect(success_url)
 

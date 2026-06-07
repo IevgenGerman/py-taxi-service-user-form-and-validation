@@ -25,16 +25,7 @@ class CarForm(forms.ModelForm):
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,)
-    class Meta:
-        model = Car
-        fields = "__all__"
 
-
-class CarForm(forms.ModelForm):
-    drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,)
     class Meta:
         model = Car
         fields = "__all__"
