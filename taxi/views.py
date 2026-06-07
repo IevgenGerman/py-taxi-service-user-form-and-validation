@@ -1,11 +1,14 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .forms import DriverCreationForm
+from django.contrib import messages
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
+from django.views import View
 
 
 @login_required
@@ -53,6 +56,9 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:manufacturer-list")
 
 
+class ManufacturerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Manufacturer
+
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
@@ -65,13 +71,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -96,3 +102,38 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "taxi/driver_form.html"
     success_url = reverse_lazy("taxi:driver-list")
 
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        driver = self.get_object()
+        if driver == self.request.user:
+            logout(self.request)
+            messages.success(self.request,
+                             "Your driver account has "
+                             "been permanently deleted.")
+        else:
+            messages.success(self.request, f"Driver {driver.username} was successfully deleted.")
+        super().form_valid(form)
+        return HttpResponseRedirect(success_url)
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_form.html"  # Назва шаблону форми
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class ToggleAssignToCarView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
+        driver = request.user
+        if driver in car.drivers.all():
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
+        return redirect("taxi:car-detail", pk=pk)
